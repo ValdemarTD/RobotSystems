@@ -1,10 +1,10 @@
 import time
 import logging
 from logdecorator import log_on_start, log_on_end, log_on_error
+import atexit
 
-
-logging_format = "%( asctime ) s : %( message ) s "
-logging.basicConfig( format = logging_format, level = logging.INFO, datefmt ="% H :% M :% S ")
+logging_format = "%(asctime)s : %(message)s "
+logging.basicConfig( format = logging_format, level = logging.INFO, datefmt ="%H:%M:%S")
 
 logging.getLogger().setLevel( logging.DEBUG )
 
@@ -49,6 +49,9 @@ class Picarx(object):
                 config:str=config_file,
                 ):
 
+        #Stops motors when the program exits
+        atexit.register(self.stop)
+
         # config_flie
         self.config_flie = fileDB(config, 774, User)
         # servos init 
@@ -85,6 +88,7 @@ class Picarx(object):
         self.ultrasonic = Ultrasonic(Pin(tring), Pin(echo))
         
 
+    @log_on_start(logging.DEBUG, "Function call: set_motor_speed. Motor {motor} set to {speed}")
     def set_motor_speed(self,motor,speed):
         # global cali_speed_value,cali_dir_value
         motor -= 1
@@ -93,8 +97,6 @@ class Picarx(object):
         elif speed < 0:
             direction = -1 * self.cali_dir_value[motor]
         speed = abs(speed)
-        if speed != 0:
-            speed = int(speed /2 ) + 50
         speed = speed - self.cali_speed_value[motor]
         if direction < 0:
             self.motor_direction_pins[motor].high()
@@ -131,6 +133,7 @@ class Picarx(object):
         self.config_flie.set("picarx_dir_servo", "%s"%value)
         self.dir_servo_pin.angle(value)
 
+    @log_on_start(logging.DEBUG, "Changing steering angle to {value}")
     def set_dir_servo_angle(self,value):
         self.dir_current_angle = value
         angle_value  = value + self.dir_cal_value
@@ -152,11 +155,13 @@ class Picarx(object):
     def set_camera_servo2_angle(self,value):
         self.camera_servo_pin2.angle(-1*(value + -1*self.cam_cal_value_2))
 
-
+    @log_on_start(logging.DEBUG, "Function call to set_power: Motor speed set to {speed}")
     def set_power(self,speed):
         self.set_motor_speed(1, speed)
         self.set_motor_speed(2, speed) 
 
+    @log_on_start(logging.DEBUG, "Going backwards at speed {speed}")
+    @log_on_end(logging.DEBUG, "No longer going backwards at speed {speed}")
     def backward(self,speed):
         current_angle = self.dir_current_angle
         if current_angle != 0:
@@ -176,6 +181,9 @@ class Picarx(object):
             self.set_motor_speed(1, -1*speed)
             self.set_motor_speed(2, speed)  
 
+    
+    @log_on_start(logging.DEBUG, "Going forwards at speed {speed}")
+    @log_on_end(logging.DEBUG, "No longer going forwards at speed {speed}")
     def forward(self,speed):
         current_angle = self.dir_current_angle
         if current_angle != 0:
@@ -197,12 +205,16 @@ class Picarx(object):
             self.set_motor_speed(1, speed)
             self.set_motor_speed(2, -1*speed)                  
 
+    @log_on_start(logging.DEBUG, "Stopping motors")
+    @log_on_end(logging.DEBUG, "Motors stopped")
     def stop(self):
         self.set_motor_speed(1, 0)
         self.set_motor_speed(2, 0)
 
     def get_distance(self):
-        return self.ultrasonic.read()
+        val = self.ultrasonic.read()
+        logging.debug(f"Ultrasonic sensor read {val}")
+        return val
 
     def set_grayscale_reference(self, value):
         self.get_grayscale_reference = value

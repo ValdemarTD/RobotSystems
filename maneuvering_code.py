@@ -4,7 +4,7 @@ import time
 
 def simple_move(car, dist, dir, angle, speed):
     car.set_dir_servo_angle(angle)
-    time_to_sleep = abs(dist)/speed
+    time_to_sleep = abs(dist)/speed/4
 
     if dir == 0:
         car.forward(speed)
@@ -22,8 +22,11 @@ def k_turn(car):
 
 if __name__ == "__main__":
     px = Picarx()
-    simple_move(px, 100, 0, 0, 100)
-    simple_move(px, 100, 1, 0, 100)
-    simple_move(px, 100, 0, 35, 100)
-    simple_move(px, 100, 0, -35, 100)
+    simple_move(px, 100, 0, 0, 50)
+    time.sleep(0.2)
+    simple_move(px, 100, 1, 0, 50)
+    time.sleep(0.2)
+    simple_move(px, 100, 0, 35, 50)
+    time.sleep(0.2)
+    simple_move(px, 100, 1, -35, 50)
     px.stop()

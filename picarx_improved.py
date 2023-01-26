@@ -1,17 +1,27 @@
 import time
+import logging
+from logdecorator import log_on_start, log_on_end, log_on_error
+
+
+logging_format = "%( asctime ) s : %( message ) s "
+logging.basicConfig( format = logging_format, level = logging.INFO, datefmt ="% H :% M :% S ")
+
+logging.getLogger().setLevel( logging.DEBUG )
+
+
 try:
     from robot_hat import *
     print("Imported robot_hat")
-    from robot_hat import __reset_mcu__
-    __reset_mcu__()
+    from robot_hat import reset_mcu
+    reset_mcu()
     time.sleep(0.01)
 except ImportError:
     print("This computer does not appear to be a PiCar - X system (robot_hat is not present). Shadowing hardware calls with substitute functions ")
     from sim_robot_hat import *
 import os
 
-reset_mcu()
-time.sleep(0.2)
+#reset_mcu()
+#time.sleep(0.2)
 
 # user and User home directory
 User = os.popen('echo ${SUDO_USER:-$LOGNAME}').readline().strip()

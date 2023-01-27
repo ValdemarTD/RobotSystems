@@ -20,16 +20,16 @@ def paralell_park(car, direction, dist_between, speed):
     simple_move(car, dist_between, 0, 0, speed)
     time.sleep(0.15)
     #Move to 45 degree angle
-    simple_move(car, 100, 1, dir_modifier*30, speed)
+    simple_move(car, 150, 1, dir_modifier*30, speed)
     time.sleep(0.05)
     #Back up most of the way
     simple_move(car, dist_between/2, 1, 0, speed)
     time.sleep(0.05)
     #re-orient
-    simple_move(car, 100, 1, -dir_modifier*30, speed)
+    simple_move(car, 150, 1, -dir_modifier*30, speed)
     time.sleep(0.15)
     #Finish parking
-    simple_move(car, dist_between/2, 0, 0, speed)
+    simple_move(car, dist_between/3, 0, 0, speed)
     car.stop()
 
 
@@ -39,7 +39,7 @@ def k_turn(car):
 
 if __name__ == "__main__":
 
-    testing_speed = 30
+    testing_speed = 50
 
     px = Picarx()
     simple_move(px, 100, 0, 0, testing_speed)
@@ -56,11 +56,11 @@ if __name__ == "__main__":
 
     time.sleep(0.5)
 
-    paralell_park(px, "right", 500, testing_speed)
+    paralell_park(px, "right", 200, testing_speed)
 
     time.sleep(0.5)
-    
-    paralell_park(px, "left", 500, testing_speed)
+
+    paralell_park(px, "left", 200, testing_speed)
 
 
     px.stop()

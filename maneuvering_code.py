@@ -19,7 +19,7 @@ def paralell_park(car, direction, dist_between, speed):
 
     simple_move(car, dist_between, 0, 0, speed)
     time.sleep(0.15)
-    #Move to 45 degree angle
+    #Move to backup angle
     simple_move(car, 150, 1, dir_modifier*30, speed)
     time.sleep(0.05)
     #Back up most of the way
@@ -33,34 +33,55 @@ def paralell_park(car, direction, dist_between, speed):
     car.stop()
 
 
-def k_turn(car):
-    pass
+def k_turn(car, direction, speed):
+    if direction == "left":
+        dir_modifier = -1
+    elif direction == "right":
+        dir_modifier = 1
+    simple_move(car, 200, 0, dir_modifier*30, speed)
+    time.sleep(0.1)
+    simple_move(car, 200, 1, -dir_modifier*30, speed)
+    time.sleep(0.1)
+    simple_move(car, 200, 0, 0, speed)
 
+
+def demo_simple_move(car, testing_speed):
+    simple_move(px, 150, 0, 0, testing_speed)
+    time.sleep(0.2)
+    simple_move(px, 150, 1, 0, testing_speed)
+    time.sleep(0.2)
+    simple_move(px, 150, 0, 30, testing_speed)
+    time.sleep(0.2)
+    simple_move(px, 150, 1, 30, testing_speed)
+    time.sleep(0.2)
+    simple_move(px, 150, 0, -15, testing_speed)
+    time.sleep(0.2)
+    simple_move(px, 150, 1, -15, testing_speed)
+
+def demo_parallel_park(car, testing_speed):
+    paralell_park(px, "right", 200, testing_speed)
+    time.sleep(0.5)
+    paralell_park(px, "left", 200, testing_speed)
+
+def demo_k_turn(car, testing_speed):
+    k_turn(car, "right", testing_speed)
+    time.sleep(1)
+    k_turn(car, "right", testing_speed)
 
 if __name__ == "__main__":
 
-    testing_speed = 50
+    speed = 75
 
     px = Picarx()
-    simple_move(px, 100, 0, 0, testing_speed)
-    time.sleep(0.2)
-    simple_move(px, 100, 1, 0, testing_speed)
-    time.sleep(0.2)
-    simple_move(px, 100, 0, 30, testing_speed)
-    time.sleep(0.2)
-    simple_move(px, 100, 1, 30, testing_speed)
-    time.sleep(0.2)
-    simple_move(px, 100, 0, -15, testing_speed)
-    time.sleep(0.2)
-    simple_move(px, 100, 1, -15, testing_speed)
+    
+    demo_simple_move(px, speed)
 
     time.sleep(0.5)
 
-    paralell_park(px, "right", 200, testing_speed)
+    demo_parallel_park(px, speed)
 
     time.sleep(0.5)
 
-    paralell_park(px, "left", 200, testing_speed)
-
+    demo_k_turn(car, speed)
 
     px.stop()

@@ -11,7 +11,7 @@ def simple_move(car, dist, dir, angle, speed):
     time.sleep(time_to_sleep)
     car.stop()
 
-def paralell_park(car, direction, dist_between, speed):
+def parallel_park(car, direction, dist_between, speed):
     if direction == "left":
         dir_modifier = -1
     elif direction == "right":
@@ -59,9 +59,9 @@ def demo_simple_move(car, testing_speed):
     simple_move(px, 150, 1, -15, testing_speed)
 
 def demo_parallel_park(car, testing_speed):
-    paralell_park(px, "right", 200, testing_speed)
+    parallel_park(px, "right", 200, testing_speed)
     time.sleep(0.5)
-    paralell_park(px, "left", 200, testing_speed)
+    parallel_park(px, "left", 200, testing_speed)
 
 def demo_k_turn(car, testing_speed):
     k_turn(car, "right", testing_speed)

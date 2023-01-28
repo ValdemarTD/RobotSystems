@@ -38,9 +38,9 @@ def k_turn(car, direction, speed):
         dir_modifier = -1
     elif direction == "right":
         dir_modifier = 1
-    simple_move(car, 200, 0, dir_modifier*30, speed)
+    simple_move(car, 320, 0, dir_modifier*30, speed)
     time.sleep(0.1)
-    simple_move(car, 200, 1, -dir_modifier*30, speed)
+    simple_move(car, 320, 1, -dir_modifier*30, speed)
     time.sleep(0.1)
     simple_move(car, 200, 0, 0, speed)
 
@@ -74,14 +74,14 @@ if __name__ == "__main__":
 
     px = Picarx()
     
-    demo_simple_move(px, speed)
+    #demo_simple_move(px, speed)
+
+    #time.sleep(0.5)
+
+    #demo_parallel_park(px, speed)
 
     time.sleep(0.5)
 
-    demo_parallel_park(px, speed)
-
-    time.sleep(0.5)
-
-    demo_k_turn(car, speed)
+    demo_k_turn(px, speed)
 
     px.stop()

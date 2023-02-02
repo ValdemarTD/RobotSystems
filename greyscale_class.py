@@ -5,7 +5,7 @@ except:
 
 import time
 import logging
-
+from picarx_improved import Picarx
 
 logging_format = "%(asctime)s : %(message)s "
 logging.basicConfig( format = logging_format, level = logging.DEBUG, datefmt ="%H:%M:%S")
@@ -21,10 +21,11 @@ class GreyscaleSensor():
     def query_sensor(self):
         self.val_list = [self.adc0.read(), self.adc1.read(), self.adc2.read()]
         logging.debug(f"Greyscale Sensor returned {self.val_list}")
-        return val_list
+        return self.val_list
 
 
 if __name__=="__main__":
+    car = Picarx()
     sensor = GreyscaleSensor()
     while True:
         sensor.query_sensor()
